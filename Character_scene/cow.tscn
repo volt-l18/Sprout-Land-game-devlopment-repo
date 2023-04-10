@@ -1,0 +1,160 @@
+[gd_scene load_steps=23 format=3 uid="uid://c361pvans1w53"]
+
+[ext_resource type="Script" path="res://Character_scene/cow.gd" id="1_ax8hv"]
+[ext_resource type="Texture2D" uid="uid://curxcasr68e1b" path="res://Characters_res/Free Cow Sprites.png" id="1_qoy2q"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ujou5"]
+radius = 10.0156
+height = 28.0469
+
+[sub_resource type="Animation" id="Animation_qjjrr"]
+resource_name = "Idle_Cow_Blink"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_laqt0"]
+resource_name = "Idle_Cow_Tail"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 2]
+}
+
+[sub_resource type="Animation" id="Animation_flmey"]
+resource_name = "Walk_Cow"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [3, 4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cu2r7"]
+_data = {
+"Idle_Cow_Blink": SubResource("Animation_qjjrr"),
+"Idle_Cow_Tail": SubResource("Animation_laqt0"),
+"Walk_Cow": SubResource("Animation_flmey")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6o4uu"]
+animation = &"Idle_Cow_Blink"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dvdxt"]
+animation = &"Idle_Cow_Blink"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6j4xs"]
+animation = &"Idle_Cow_Tail"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qjhl6"]
+animation = &"Idle_Cow_Tail"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_uhn2a"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_6o4uu")
+blend_point_0/pos = Vector2(0, 1.1)
+blend_point_1/node = SubResource("AnimationNodeAnimation_dvdxt")
+blend_point_1/pos = Vector2(0, -1.1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_6j4xs")
+blend_point_2/pos = Vector2(1, 0)
+blend_point_3/node = SubResource("AnimationNodeAnimation_qjhl6")
+blend_point_3/pos = Vector2(-1, 0)
+min_space = Vector2(-1, -1.1)
+max_space = Vector2(1, 1.1)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ehm2m"]
+animation = &"Walk_Cow"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_s7xde"]
+animation = &"Walk_Cow"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g7mss"]
+animation = &"Walk_Cow"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r14j3"]
+animation = &"Walk_Cow"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_r8jl3"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_ehm2m")
+blend_point_0/pos = Vector2(0, 1)
+blend_point_1/node = SubResource("AnimationNodeAnimation_s7xde")
+blend_point_1/pos = Vector2(1, 0)
+blend_point_2/node = SubResource("AnimationNodeAnimation_g7mss")
+blend_point_2/pos = Vector2(0, -1)
+blend_point_3/node = SubResource("AnimationNodeAnimation_r14j3")
+blend_point_3/pos = Vector2(-1, 0)
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_adugg"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n8lfo"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0agew"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_65t0s"]
+states/Idle_right/node = SubResource("AnimationNodeBlendSpace2D_uhn2a")
+states/Idle_right/position = Vector2(332, 100)
+states/Walk_right/node = SubResource("AnimationNodeBlendSpace2D_r8jl3")
+states/Walk_right/position = Vector2(495, 100)
+transitions = ["Start", "Idle_right", SubResource("AnimationNodeStateMachineTransition_adugg"), "Idle_right", "Walk_right", SubResource("AnimationNodeStateMachineTransition_n8lfo"), "Walk_right", "Idle_right", SubResource("AnimationNodeStateMachineTransition_0agew")]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_mtu8a"]
+
+[node name="Cow" type="CharacterBody2D"]
+script = ExtResource("1_ax8hv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_qoy2q")
+hframes = 3
+vframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(1, 5)
+rotation = 1.57877
+shape = SubResource("CapsuleShape2D_ujou5")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimationTree")
+libraries = {
+"": SubResource("AnimationLibrary_cu2r7")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_65t0s")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_mtu8a")
+parameters/Idle_right/blend_position = Vector2(-0.00414938, 0.0336244)
+parameters/Walk_right/blend_position = Vector2(0, 0)
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
